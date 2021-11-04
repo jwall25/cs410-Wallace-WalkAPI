@@ -20,7 +20,21 @@ app.get("/", (req, res) => {
 // app.put();
 
 app.get("/games", (req, res) => {
-  res.send("games api running");
+  //res.send("games api running");
+
+  db.executeQuery(
+    `Select *
+      FROM game
+      Left join Genre
+      On genre.GenrePK = game.GenreFK`
+  )
+    .then((theResults) => {
+      res.status(200).send(theResults);
+    })
+    .catch((myError) => {
+      console.log(myError);
+      res.status(500).send();
+    });
 });
 
 // app.get("/movies", (req, res) => {
