@@ -25,8 +25,8 @@ app.get("/games", (req, res) => {
   db.executeQuery(
     `Select *
       FROM game
-      Left join Genre
-      On genre.GenrePK = game.GenreFK`
+      LEFT JOIN Genre
+      ON genre.GenrePK = game.GenreFK`
   )
     .then((theResults) => {
       res.status(200).send(theResults);
