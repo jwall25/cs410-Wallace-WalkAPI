@@ -37,6 +37,31 @@ app.get("/games", (req, res) => {
     });
 });
 
+app.get("/games/:pk", (req, res) => {
+  let pk = req.params.pk;
+  // console.log(pk);
+
+  let myQuery = `Select *
+  FROM game
+  Left join Genre
+  On genre.GenrePK = game.GenreFK
+  WHERE GamePK = ${pk}`;
+
+  db.executeQuery(myQuery)
+    .then((result) => {
+      // console.log(result);
+      if (result[0]) {
+        res.send(result[0]);
+      } else {
+        res.status(404).send(`Bad request`);
+      }
+    })
+    .catch((err) => {
+      console.log("Error in /movie/:pk", err);
+      res.status(500).send();
+    });
+});
+
 // app.get("/movies", (req, res) => {
 //   //get data from database
 //   db.executeQuery(
@@ -50,31 +75,6 @@ app.get("/games", (req, res) => {
 //     })
 //     .catch((myError) => {
 //       console.log(myError);
-//       res.status(500).send();
-//     });
-// });
-
-// app.get("/movies/:pk", (req, res) => {
-//   let pk = req.params.pk;
-//   // console.log(pk);
-
-//   let myQuery = `Select *
-//   FROM Movie
-//   Left join Genre
-//   On genre.GenrePK = Movie.GenreFK
-//   WHERE MoviePK = ${pk}`;
-
-//   db.executeQuery(myQuery)
-//     .then((result) => {
-//       // console.log(result);
-//       if (result[0]) {
-//         res.send(result[0]);
-//       } else {
-//         res.status(404).send(`Bad request`);
-//       }
-//     })
-//     .catch((err) => {
-//       console.log("Error in /movie/:pk", err);
 //       res.status(500).send();
 //     });
 // });
