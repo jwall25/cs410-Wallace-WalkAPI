@@ -33,10 +33,10 @@ const auth = async (req, res, next) => {
       req.creator = returnedUser[0];
       next();
     } else {
-      return res.status(401)("Invalid credentials");
+      return res.status(401)("Authentication Failed");
     }
   } catch (err) {
-    return res.status(401).send("Invalid Credentials");
+    return res.status(401).send("Authentication Failed");
   }
 };
 

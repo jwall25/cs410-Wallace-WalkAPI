@@ -1,0 +1,4 @@
+{
+  "appService.defaultWebAppToDeploy": "/subscriptions/b39b5891-08b2-48ed-9dbd-c9400f9e1adc/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/cis410-fa21-Wallace-Walk",
+  "appService.deploySubpath": "."
+}
