@@ -39,11 +39,12 @@ app.get("/walkthroughs/me", auth, async (req, res) => {
     let walkCreatorPK = req.creator.CreatorPK;
     //query database for users records
     let query = `SELECT Walkthrough.WalkPK,
+  Walkthrough.Title,
   Walkthrough.Summary,
   Walkthrough.Rating,
   Walkthrough.VideoLength,
   Walkthrough.CreatorFK,
-  Game.Title
+  Game.Title AS GameTitle
   From Walkthrough
   Left Join Game
   On Game.GamePK = Walkthrough.GameFK
