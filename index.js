@@ -33,6 +33,54 @@ app.get("/", (req, res) => {
 // app.post();
 // app.put();
 
+app.get("/walkthroughs/me", auth, async (req, res) => {
+  try {
+    //get contactpk
+    let walkCreatorPK = req.creator.CreatorPK;
+    //query database for users records
+    let query = `SELECT Walkthrough.WalkPK,
+  Walkthrough.Summary,
+  Walkthrough.Rating,
+  Walkthrough.VideoLength,
+  Walkthrough.CreatorFK,
+  Game.Title
+  From Walkthrough
+  Left Join Game
+  On Game.GamePK = Walkthrough.GameFK
+  Where Walkthrough.CreatorFK = ${walkCreatorPK}`;
+
+    let walkResult = await db.executeQuery(query);
+    //send users reviews back to them
+    if (!walkResult[0]) {
+      res.status(200).send("No Walkthroughs Made");
+    } else {
+      res.status(200).send(walkResult);
+    }
+  } catch (err) {
+    console.log("error in GET /walkthroughs/me", err);
+    res.status(500).send();
+  }
+});
+
+// app.patch("/reviews/:pk", auth, async (req, res) => {});
+
+// app.delete("/reveiws/:pk");
+
+app.post("/creators/logout", auth, (req, res) => {
+  let query = `UPDATE Creator
+  Set Token = NULL
+  Where CreatorPK = ${req.creator.CreatorPK}`;
+
+  db.executeQuery(query)
+    .then(() => {
+      res.status(200).send();
+    })
+    .catch((err) => {
+      console.log("error in POST /creators/logout", err);
+      res.status(500).send();
+    });
+});
+
 app.post("/walkthroughs", auth, async (req, res) => {
   try {
     let gameFK = req.body.gameFK;
